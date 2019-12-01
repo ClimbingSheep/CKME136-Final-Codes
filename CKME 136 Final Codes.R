@@ -590,6 +590,7 @@ de_clean<-newdf_sent # Assign to a simplier name
 
 # To know average word length of the tweets
 for (i in 1:nrow(df_clean)){
+df_clean$text[i]<-gsub("\\s+"," ",df_clean$text[i])
 df_clean$words[i]<-sapply(strsplit(df_clean$text[i]," "), length)
 }
 
@@ -621,7 +622,7 @@ tweets_number <- data.frame(
                      )
 barplot(height = tweets_number$Total_tweets, names=tweets_number$Day ,
         density=c(5,10,20,30,7) , angle=c(0,45,90,11,36) , col="dark blue",
-        main = "Boxplot for total tweets from Wednesday to Sunday")
+        main = "Barplot for total tweets from Wednesday to Sunday")
 
 save(df_clean,file="df_clean_length.RData")
 
@@ -690,7 +691,7 @@ Word_freq <- data.frame(
 )
 barplot(height = Word_freq$Total_tweet_word, names=Word_freq $TweetDay ,
         density=c(5,10,20,30,7) , angle=c(0,45,90,11,36) , col="dark red",
-        main = "Boxplot for total tweeted words from Wednesday 
+        main = "Barplot for total tweeted words from Wednesday 
         to Sunday")
 
 
@@ -733,7 +734,7 @@ combined<-c(affinword,nrcword)  # combine 2 dictionaries
 # this word twice form the nrc dictionary.
 
 which(combined =="john")
-combined<-combined[-c(9760,9761),]
+combined<-combined[-c(9760,9761)]
 
 
 ######## More stopwords needed to be customed.
@@ -971,7 +972,7 @@ score.sentiment = function(sentences, pos.words, neg.words, .progress='none')
     # sometimes a list() is one level of hierarchy too much
     words = unlist(word.list)
     
-    # compare our words to the dictionaries of positive & negative terms
+    # compare words to the dictionaries of positive & negative terms
     pos.matches = match(words, pos.words)
     neg.matches = match(words, neg.words)
     
@@ -980,7 +981,7 @@ score.sentiment = function(sentences, pos.words, neg.words, .progress='none')
     pos.matches = !is.na(pos.matches)
     neg.matches = !is.na(neg.matches)
     
-    # and conveniently enough, TRUE/FALSE will be treated as 1/0 by sum():
+    # TRUE/FALSE will be treated as 1/0 by sum():
     score = sum(pos.matches) - sum(neg.matches)
     
     return(score)
@@ -1047,7 +1048,7 @@ glimpse(nrc_pos)
 
 nrc_pos<-data.frame(nrc_pos$word)  # transform tbl frame into data frame
 # because tbl frame is only a local frame
-glimpse(nrc_neg)
+glimpse(nrc_pos)
 nrc_pos$word<-as.character(nrc_pos$nrc_pos.word)
 nrc_poslist<-nrc_pos$word
 
