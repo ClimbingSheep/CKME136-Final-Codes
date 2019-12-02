@@ -824,8 +824,8 @@ save(df_clean_transformed,file="df_clean_transformed.RData")
 #####################################
 
 # Import positive and negative words downloaded from Github
-pos.words = readLines("positive-words.txt")
-neg.words = readLines("negative-words.txt")
+pos.words = readLines("positive_words.txt")
+neg.words = readLines("negative_words.txt")
 
 # Add words from two other dictionaries ("nrc" and "afinn)
 # into the positive and negative word lists
