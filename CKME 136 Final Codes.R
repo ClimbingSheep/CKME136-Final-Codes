@@ -671,12 +671,15 @@ df_clean_token<- df_clean %>%
                       mutate(word = gsub("\u2019", "'", word)) %>% # original text uses right single quotation mark
                                                           # stop_words in tidytext uses an apostrophe
                         anti_join(stop_words,by="word")   # 27058 tokens in the bag
-
+library(stringi)
+length(which(stri_enc_isascii(df_clean_token$word)==F)) # no foreign character
 
 # Count frequency of all the words
 sentiment_freq<-df_clean_token %>%
                 count(word, sort = T) #6365 
-
+hist(sentiment_freq$n,col="dark blue",border="white",
+     xlab="Frequency of each token",main="Histogram of tokens frequency distribution",freq=T)
+summary(sentiment_freq)
 
 # Count frequency of each tokens on each day
 
@@ -1345,7 +1348,7 @@ prop.table(table(test$class))  # 0.23(neg): 0.48(neutral): 0.277 (pos)
 train_tokens <- tokens(train$text, what = "word")
 train_tokens<-tokens_select(train_tokens,tidy_stop,selection="remove")
 train_tokens<-tokens_select(train_tokens,unwant_word,selection="remove") #2805 tokens
-
+train_tokens<-tokens_wordstem(train_tokens,language = "english")
 save(train_tokens,file="nrc_train_tokens_afterstop.RData")
 load("nrc_train_tokens_afterstop.RData")
 
@@ -1362,7 +1365,7 @@ load("nrc_train_tokens_afterstop.RData")
 test_tokens <- tokens(test$text, what = "word")
 test_tokens<-tokens_select(test_tokens,tidy_stop,selection="remove")
 test_tokens<-tokens_select(test_tokens,unwant_word,selection="remove") #1201 tokens
-
+test_tokens<-tokens_wordstem(test_tokens,language = "english")
 save(test_tokens,file="nrc_test_tokens_afterstop.RData")
 load("nrc_test_tokens_afterstop.RData")
 
@@ -1450,17 +1453,17 @@ total.time <- Sys.time() - start.time #1.1 minutes
 total.time
 
 
-# Project new data (e.g., the test data) into the SVD semantic space.
-sigma_inverse <- 1 / train.irlba$d
-u.transpose <- t(train.irlba$u)
-document <- train_tokens_tfidf[1,]
-document_hat <- sigma_inverse * u.transpose %*% document
+## Educational purpose for test set (don't run for training): 
+## Project new data (e.g., the test data) into the SVD semantic space.
+# sigma_inverse <- 1 / train.irlba$d
+# u.transpose <- t(train.irlba$u)
+# document <- train_tokens_tfidf[1,]
+# document_hat <- sigma_inverse * u.transpose %*% document
 
 
 # Create new feature data frame using our document semantic space of 300
 # features (i.e., the V matrix from our SVD) for classification
 nrc_train_svd <- data.frame(class = train$class, train.irlba$v)
-
 
 
 ##### UNTO Machine Learning
@@ -1554,7 +1557,7 @@ prop.table(table(test$class))  # 0.28(neg): 0.32(neutral): 0.39 (pos)
 train_tokens <- tokens(train$text, what = "word")
 train_tokens<-tokens_select(train_tokens,tidy_stop,selection="remove")
 train_tokens<-tokens_select(train_tokens,unwant_word,selection="remove") #2805 tokens
-
+train_tokens<-tokens_wordstem(train_tokens,language = "english")
 save(train_tokens,file="tl_train_tokens_afterstop.RData")
 load("tl_train_tokens_afterstop.RData")
 
@@ -1621,17 +1624,9 @@ total.time <- Sys.time() - start.time #59 sec
 total.time
 
 
-# Project new data (e.g., the test data) into the SVD semantic space.
-sigma_inverse <- 1 / train.irlba$d
-u.transpose <- t(train.irlba$u)
-document <- train_tokens_tfidf[1,]
-document_hat <- sigma_inverse * u.transpose %*% document
-
-
 # Create new feature data frame using our document semantic space of 300
 # features (i.e., the V matrix from our SVD) for classification
 tl_train_svd <- data.frame(class = train$class, train.irlba$v)
-
 
 
 ##### UNTO Machine Learning
