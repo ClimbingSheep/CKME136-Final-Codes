@@ -579,7 +579,7 @@ which(!complete.cases((newdf_sent$text)))  #return: integer(0)
    newdf_sent$text[i]<-gsub("[\r\n]+", "", newdf_sent$text[i]) #removes line break (for Windows)
  }
 
-de_clean<-newdf_sent # Assign to a simplier name
+df_clean<-newdf_sent # Assign to a simplier name
 
                  #################End of preliminary cleaning.################
 
