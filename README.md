@@ -7,4 +7,4 @@ R codes for twitter sentiment analysis
 
 2: Download new tweets from Greater Toronto area that are only related to the most discussed topic found from section 1
 
-3: Predictive Analysis of the model b uolt for sentiment analysis
+3: Predictive Analysis of the model built for sentiment analysis
