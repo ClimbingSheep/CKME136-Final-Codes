@@ -1,4 +1,4 @@
-# Sentiment Analysis of Twitter texts: for 2019 Capstone project
+# 2019 Capstone project:Sentiment Analysis of Twitter texts:
 R codes for twitter sentiment analysis
 
 #This file contains 3 sections: 
