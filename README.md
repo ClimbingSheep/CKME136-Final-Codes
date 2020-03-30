@@ -1,4 +1,4 @@
-# CKME136-Final-Codes
+# Sentiment Analysis of Twitter texts: for 2019 Capstone project
 R codes for twitter sentiment analysis
 
 #This file contains 3 sections: 
